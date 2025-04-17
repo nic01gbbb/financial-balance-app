@@ -1,0 +1,22 @@
+# Ignorar arquivos de configuração sensíveis
+/src/main/resources/application.properties
+
+# Ou, se preferir ignorar todos os arquivos .properties:
+*.properties
+
+# Ignorar pasta target (gerada pelo Maven/Gradle)
+target/
+
+# Ignorar pastas e arquivos do IntelliJ IDEA
+.idea/
+*.iml
+
+# Ignorar arquivos de build do Eclipse
+.project
+.classpath
+
+# Ignorar arquivos de log
+*.log
+
+# Ignorar arquivos de dependências do Maven
+/.mvn/
