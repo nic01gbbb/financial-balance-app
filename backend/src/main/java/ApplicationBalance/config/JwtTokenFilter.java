@@ -59,13 +59,19 @@ public class JwtTokenFilter extends OncePerRequestFilter {
             String token = authorizationHeader.substring(7);
             Claims claims = jwtService.parseClaimsJws(token);
             String username = claims.getSubject();
-            String roles = (String) claims.get("roles");
+            String roles = (String) claims.get("role");
 
-            List<SimpleGrantedAuthority> authorities = new ArrayList<>();
-            if (roles != null) {
-                Arrays.stream(roles.split(",")).forEach(role ->
-                        authorities.add(new SimpleGrantedAuthority("ROLE_" + role)));
+
+            if (roles.equals("ROLE_USER")) {
+                System.out.println("Regular user trying accesses!");
+                response.setStatus(HttpServletResponse.SC_FORBIDDEN);
+                response.setContentType("application/json");
+                response.getWriter().write("{\"error\": \"Accesses declined by regular users.\"}");
+                return;
             }
+            List<SimpleGrantedAuthority> authorities = new ArrayList<>();
+            Arrays.stream(roles.split(",")).forEach(role ->
+                    authorities.add(new SimpleGrantedAuthority(role)));
 
             Authentication authentication = new UsernamePasswordAuthenticationToken(username, null, authorities);
             SecurityContextHolder.getContext().setAuthentication(authentication);
