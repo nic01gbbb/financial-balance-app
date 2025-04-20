@@ -3,12 +3,9 @@ package ApplicationBalance.controllers;
 import ApplicationBalance.dtos.user.UserCreateDTO;
 import ApplicationBalance.dtos.user.UserDTO;
 import ApplicationBalance.services.UserService;
-import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;

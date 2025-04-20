@@ -1,29 +1,12 @@
 // JwtService.java
 package ApplicationBalance.config;
-
-import ApplicationBalance.dtos.user.UserCreateDTO;
-import ApplicationBalance.entities.Role;
-import ApplicationBalance.entities.User;
-import ApplicationBalance.repositories.RoleRepository;
-import ApplicationBalance.repositories.UserRepository;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.Keys;
-import jakarta.validation.Valid;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.server.ResponseStatusException;
-
 import javax.crypto.SecretKey;
 import java.nio.charset.StandardCharsets;
-import java.util.HashMap;
-import java.util.Map;
+
 
 @Service
 public class JwtService {

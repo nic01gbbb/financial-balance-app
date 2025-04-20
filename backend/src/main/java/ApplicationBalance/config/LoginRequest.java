@@ -1,4 +1,4 @@
-package ApplicationBalance.config;
+package config;
 
 import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;

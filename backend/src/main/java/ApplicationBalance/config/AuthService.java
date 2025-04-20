@@ -18,10 +18,11 @@ public class AuthService {
     private UserRepository userRepository;
     @Autowired
     private PasswordEncoder passwordEncoder;
+
     @Autowired
     private JwtUtil jwtUtil;
 
-    public ResponseEntity<LoginResponse> login(LoginRequest request) {
+    public ResponseEntity<LoginResponse> login(config.LoginRequest request) {
         Optional<User> userOpt = userRepository.findByName(request.getName());
 
         if (userOpt.isEmpty()) {

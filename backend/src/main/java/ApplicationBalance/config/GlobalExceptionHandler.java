@@ -1,4 +1,4 @@
-package ApplicationBalance.config;
+package config;
 
 import org.springframework.context.support.DefaultMessageSourceResolvable;
 import org.springframework.http.ResponseEntity;
