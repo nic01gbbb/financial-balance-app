@@ -26,7 +26,7 @@ public class ServiceController {
     @Autowired
     private ServiceService serviceService;
 
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PreAuthorize("hasRole('ADMIN')")
     @GetMapping("/create")
     public ResponseEntity<?> createService(@RequestBody @Valid ServiceCreateDTO serviceCreateDTO, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {

@@ -1,7 +1,7 @@
 package ApplicationBalance.dtos.transaction;
 
 
-import ApplicationBalance.entities.TransactionType;
+import ApplicationBalance.enums.TransactionType;
 import lombok.Data;
 
 import java.math.BigDecimal;

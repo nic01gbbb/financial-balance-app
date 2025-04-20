@@ -22,7 +22,6 @@ public class UserController {
     private UserService userService;
 
 
-
     // Get a user by ID
     @GetMapping("/{id}")
     public ResponseEntity<UserDTO> getUserById(@PathVariable UUID id) {

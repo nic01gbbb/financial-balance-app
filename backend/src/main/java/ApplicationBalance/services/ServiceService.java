@@ -27,14 +27,15 @@ public class ServiceService {
         service.setName(serviceCreateDTO.getName());
         service.setPrice(serviceCreateDTO.getPrice());
         service.setDescription(serviceCreateDTO.getDescription());
+        service.setAvailable(true);
         serviceRepository.save(service);
     }
 
-public List<Service> ListServices(){
- List<Service>listServices = serviceRepository.findAll();
- if(listServices.isEmpty() || listServices.getFirst() == null ){
-     throw new ResponseStatusException(HttpStatus.NOT_FOUND, "No services found");
- }
- return listServices;
+    public List<Service> ListServices() {
+        List<Service> listServices = serviceRepository.findAll();
+        if (listServices.isEmpty() || listServices.getFirst() == null) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "No services found");
+        }
+        return listServices;
     }
 }

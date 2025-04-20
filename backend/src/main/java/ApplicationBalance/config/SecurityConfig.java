@@ -35,7 +35,7 @@ public class SecurityConfig {
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        String[] alloweds = {"/auth/login", "/auth/register"};
+        String[] alloweds = {"/auth/login", "/auth/register", "/transaction/create"};
 
         http
                 .csrf(AbstractHttpConfigurer::disable)

@@ -75,13 +75,13 @@ public class JwtTokenFilter extends OncePerRequestFilter {
 
             Authentication authentication = new UsernamePasswordAuthenticationToken(username, null, authorities);
             SecurityContextHolder.getContext().setAuthentication(authentication);
-
         } catch (JwtException e) {
             response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
             response.setContentType("application/json");
             response.getWriter().write("{\"error\": \"Token inválido\"}");
             return;
         }
+
 
         filterChain.doFilter(request, response);
     }

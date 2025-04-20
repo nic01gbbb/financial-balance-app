@@ -23,11 +23,6 @@ public class Profit {
     @JoinColumn(name = "user_id", nullable = false)
     private User user; // The user who ordered the service
 
-    @ManyToOne
-    @JoinColumn(name = "service_id", nullable = false)
-    private Service service; // The service that generated the profit
-
-
     private BigDecimal amount;
     private LocalDateTime createdAt;
 

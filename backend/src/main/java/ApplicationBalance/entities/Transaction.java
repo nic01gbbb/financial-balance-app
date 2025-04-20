@@ -1,7 +1,7 @@
 package ApplicationBalance.entities;
 
+import ApplicationBalance.enums.TransactionType;
 import jakarta.persistence.*;
-import jakarta.persistence.spi.PersistenceUnitTransactionType;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -31,9 +31,9 @@ public class Transaction {
     private BigDecimal amount;
     private LocalDateTime createdAt = LocalDateTime.now();
 
-    @Enumerated(EnumType.STRING)
-    @Column(name = "transaction_type")
-    public TransactionType type;
+    @Column(name = "transaction_type", nullable = false)
+    @Enumerated(EnumType.STRING) // Usar o valor do nome da enum, ou seja, "INCOME" ou "EXPENSE"
+    private TransactionType transactionType;
 
 
     @PrePersist

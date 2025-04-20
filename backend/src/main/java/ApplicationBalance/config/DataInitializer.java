@@ -1,11 +1,10 @@
 package ApplicationBalance.config;
 
 import ApplicationBalance.entities.Account;
+import ApplicationBalance.entities.Expense;
 import ApplicationBalance.entities.Role;
 import ApplicationBalance.entities.User;
-import ApplicationBalance.repositories.AccountRepository;
-import ApplicationBalance.repositories.RoleRepository;
-import ApplicationBalance.repositories.UserRepository;
+import ApplicationBalance.repositories.*;
 import jakarta.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -14,6 +13,7 @@ import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
 import java.math.BigDecimal;
+import java.util.UUID;
 
 @Component
 public class DataInitializer {
@@ -36,10 +36,11 @@ public class DataInitializer {
     @Value("${app.admin.email}")
     private String emailadm;
 
+
     @PostConstruct
     public void automatecreateadmin() {
 
-        if (!userRepository.existsByEmail("nicholasfs@gmail.com")) {
+        if (!userRepository.existsByEmail(emailadm)) {
             String rolenameuser = "ROLE_USER";
             Role roleuser = new Role(rolenameuser);
             roleRepository.save(roleuser);
@@ -52,14 +53,17 @@ public class DataInitializer {
             User user = new User(name, email, passwordHash, roleadmin);
             userRepository.save(user);
         }
-        if (!accountRepository.existsBy() && userRepository.existsByEmail("nicholasfs@gmail.com")) {
-            User myuser = userRepository.findByname("Nicholas Peterson Gonçalves Garcia");
+        User user = userRepository.findByEmail(emailadm);
+
+        if (user != null && accountRepository.findByUser(user) == null) {
             Account account = new Account();
             account.setBalance(BigDecimal.ZERO);
             account.setLastUpdated(LocalDateTime.now());
-            account.setUser(myuser);
+            account.setUser(user);
             accountRepository.save(account);
         }
+
+
     }
 
 }

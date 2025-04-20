@@ -1,4 +1,4 @@
-package ApplicationBalance.entities;
+package ApplicationBalance.enums;
 
  public enum TransactionType {
         INCOME,

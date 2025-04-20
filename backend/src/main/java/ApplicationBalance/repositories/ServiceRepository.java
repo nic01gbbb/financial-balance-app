@@ -7,6 +7,8 @@ import java.util.UUID;
 
 public interface ServiceRepository extends JpaRepository<Service, UUID> {
 
-boolean existsByName(String name);
+    boolean existsByName(String name);
+
+    Service findByName(String name);
 
 }
