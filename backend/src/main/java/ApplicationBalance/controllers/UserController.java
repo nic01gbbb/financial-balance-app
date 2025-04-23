@@ -18,8 +18,7 @@ public class UserController {
     @Autowired
     private UserService userService;
 
-
-    // Get a user by ID
+    @PreAuthorize("hasRole('ADMIN')")
     @GetMapping("/{id}")
     public ResponseEntity<UserDTO> getUserById(@PathVariable UUID id) {
         UserDTO user = userService.getUserById(id);

@@ -8,7 +8,9 @@ CREATE TABLE services
     name        VARCHAR(255)   NOT NULL,
     description TEXT           NOT NULL,
     price       DECIMAL(10, 2) NOT NULL,
-    available   BOOLEAN DEFAULT TRUE
+    available   BOOLEAN DEFAULT TRUE,
+    user_id      UUID NOT NULL,
+    FOREIGN KEY (user_id) REFERENCES users (id)
 );
 
 

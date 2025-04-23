@@ -19,7 +19,7 @@ public class Profit {
     @GeneratedValue
     private UUID id;
 
-    @ManyToOne
+    @OneToOne
     @JoinColumn(name = "user_id", nullable = false)
     private User user; // The user who ordered the service
 

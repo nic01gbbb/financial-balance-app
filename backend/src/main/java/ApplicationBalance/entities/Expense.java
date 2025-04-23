@@ -28,14 +28,13 @@ public class Expense {
     @Enumerated(EnumType.STRING) // Usar o valor do nome da enum, ou seja, "INCOME" ou "EXPENSE"
     private ExpenseType expenseType;
 
+    private String description;
+    private BigDecimal amount;
+    private LocalDateTime due_date;
+
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
-
-    private String description;
-    private BigDecimal amount;
-
-    private LocalDateTime due_date;
 
 
 

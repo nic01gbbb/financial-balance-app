@@ -37,10 +37,10 @@ public class TransactionService {
     ProfitRepository profitRepository;
 
     @Autowired
-    ServiceRepository serviceRepository;
+    ExpenseRepository expenseRepository;
 
     @Autowired
-    ExpenseRepository expenseRepository;
+    BillRepository billRepository;
 
 
     @Transactional
@@ -69,14 +69,33 @@ public class TransactionService {
         accountRepository.save(account);
 
         Profit existprofit = profitRepository.findByUser(user);
+
+        List<Bill> bills = billRepository.findAllByUser(user);
+        if (bills.isEmpty()) {
+            throw new RuntimeException("There are no bills in this user");
+        }
+
+        List<BigDecimal> allowes = new ArrayList<>();
+        for (Bill b : bills) {
+            if (!b.getIs_paid()) {
+                allowes.add(b.getAmount());
+            }
+        }
+
+        BigDecimal total = allowes.stream()
+                .reduce(BigDecimal.ZERO, BigDecimal::add);
+
+        boolean isaccountbalanceuper = account.getBalance().subtract(total).compareTo(BigDecimal.ZERO) > 0;
+        BigDecimal accountbalance = account.getBalance();
+
         if (existprofit == null) {
             Profit newprofit = new Profit();
             newprofit.setUser(user);
-            newprofit.setAmount(dto.getAmount());
+            newprofit.setAmount(isaccountbalanceuper ? accountbalance.subtract(total) : BigDecimal.ZERO);
             newprofit.setCreatedAt(LocalDateTime.now());
             profitRepository.save(newprofit);
         } else {
-            existprofit.setAmount(existprofit.getAmount().add(dto.getAmount()));
+            existprofit.setAmount(isaccountbalanceuper ? accountbalance.subtract(total) : BigDecimal.ZERO);
             existprofit.setCreatedAt(LocalDateTime.now());
             profitRepository.save(existprofit);
         }
@@ -89,57 +108,63 @@ public class TransactionService {
         String name = principal.toString();
         User user = userRepository.findByname(name);
         if (user == null) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, " User not found by this name: " + name);
+            throw new RuntimeException(" User not found by this name");
         }
         Account account = accountRepository.findByUser(user);
         if (account == null) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, " account not found by this user: " + user);
+            throw new RuntimeException(" account not found by this user: " + user);
         } else if (account.getBalance().compareTo(dto.getAmount()) < 0) {
-            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, " account balance is less than expense value: " + account);
+            System.out.println("account balance is less than expense value");
+            throw new RuntimeException(" account balance is less than expense value");
         }
+        BigDecimal myamount = dto.getAmount();
+
         Expense expense = new Expense();
-        expense.setUser(user);
-        expense.setAmount(dto.getAmount());
-        expense.setDue_date(LocalDateTime.now());
         expense.setExpenseType(ExpenseType.valueOf(dto.getExpenseType()));
+        expense.setDescription(dto.getExpenseDescription());
+        expense.setAmount(myamount);
+        expense.setDue_date(LocalDateTime.now());
+        expense.setUser(user);
         expenseRepository.save(expense);
         account.setBalance(account.getBalance().subtract(dto.getAmount()));
         account.setLastUpdated(LocalDateTime.now());
         accountRepository.save(account);
 
-
-
         BigDecimal zero = BigDecimal.ZERO;
-
-        List<BigDecimal> myBigDecimalList = new ArrayList<>();
-        List<Expense> allExpenses = expenseRepository.findAll();
-
-        for (Expense e : allExpenses) {
-            myBigDecimalList.add(e.getAmount());
+        Profit profit = profitRepository.findByUser(user);
+        List<Bill> bills = billRepository.findAllByUser(user);
+        if (bills.isEmpty()) {
+            throw new RuntimeException("There are no bills in this user");
         }
 
-        BigDecimal totalAmount = myBigDecimalList.stream()
+        List<BigDecimal> allowes = new ArrayList<>();
+        for (Bill b : bills) {
+            if (!b.getIs_paid()) {
+                allowes.add(b.getAmount());
+            }
+        }
+
+        BigDecimal total = allowes.stream()
                 .reduce(BigDecimal.ZERO, BigDecimal::add);
 
-
-        Profit profit = profitRepository.findByUser(user);
+        boolean isaccountbalanceuper = account.getBalance().subtract(total).compareTo(BigDecimal.ZERO) > 0;
+        BigDecimal accountbalance = account.getBalance();
 
         if (profit == null) {
-            profit  = new Profit();
+            profit = new Profit();
             profit.setUser(user);
-        }
-
-        if (account.getBalance().subtract(totalAmount).compareTo(zero) <= 0) {
-            profit.setAmount(zero);
+            profit.setAmount(isaccountbalanceuper ? accountbalance.subtract(total) : BigDecimal.ZERO);
+            profit.setCreatedAt(LocalDateTime.now());
         } else {
-            profit.setAmount(account.getBalance().subtract(totalAmount));
+            profit.setAmount(isaccountbalanceuper ? accountbalance.subtract(total) : BigDecimal.ZERO);
+            profit.setCreatedAt(LocalDateTime.now());
         }
 
-        profit.setCreatedAt(LocalDateTime.now());
-        profitRepository.save(profit);
+
         Transaction transaction = transactionMapper.toEntity(dto, account);
         Transaction saved = transactionRepository.save(transaction);
         return transactionMapper.toDTO(saved);
+
     }
 
 

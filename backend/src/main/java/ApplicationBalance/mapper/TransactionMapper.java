@@ -18,10 +18,7 @@ public class TransactionMapper {
         Transaction transaction = new Transaction();
         transaction.setAmount(dto.getAmount());
         transaction.setDescription(dto.getDescription());
-
-
         transaction.setTransactionType(TransactionType.valueOf(dto.getTransactionType()));
-
         transaction.setAccount(account);
         transaction.setCreatedAt(LocalDateTime.now());
         return transaction;

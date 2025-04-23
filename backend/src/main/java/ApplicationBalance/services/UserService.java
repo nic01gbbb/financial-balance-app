@@ -32,7 +32,7 @@ public class UserService {
     private PasswordEncoder bCryptPasswordEncoder;
 
 
-    public void registerUser(UserCreateDTO user) {
+    public UserDTO registerUser(UserCreateDTO user) {
         if (userRepository.existsByEmail(user.getEmail())) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Email já está em uso");
         }
@@ -43,6 +43,7 @@ public class UserService {
         newUser.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
         newUser.setRole(roleRepository.findByName("ROLE_USER"));
         userRepository.save(newUser);
+        return convertToUserDTO(newUser);
     }
 
 

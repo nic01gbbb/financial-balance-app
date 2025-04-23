@@ -28,9 +28,9 @@ public class TransactionCreateDTO {
     @EnumValidator(enumClass = TransactionType.class, message = "Transaction type must be INCOME or EXPENSE")
     private String transactionType;  // Alterado para String
 
-    @EnumValidator(enumClass = ExpenseType.class, message = "Expense type invalid")
-    private String ExpenseType;
 
-
+    // Expense side
+    private String expenseType;
+    private String expenseDescription;
 }
 
